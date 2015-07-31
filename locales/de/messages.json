@@ -1116,7 +1116,7 @@
       "description": ""
     },
     "keygen_waiting_description": {
-      "message": "Bitte haben Sie einen Moment Geduld",
+      "message": "Das Erstellen der verschlüsselten Kommunikation kann mehrere Minuten dauern. Bitte haben Sie etwas Geduld",
       "description": ""
     },
     "digital_signature_dialog_header": {

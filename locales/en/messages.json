@@ -1108,7 +1108,7 @@
     "description": ""
   },
   "keygen_waiting_description": {
-    "message": "Please be patient",
+    "message": "Creating the encrypted communication can take several minutes. Please have a little patience",
     "description": ""
   },
   "restore_password_dialog_headline": {
