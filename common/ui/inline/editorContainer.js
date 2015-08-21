@@ -31,6 +31,7 @@ mvelo.EditorContainer = function(selector, keyringId, options) {
   this.container = null;
   this.done = null;
   this.encryptCallback = null;
+  this.getAttrsCallback = null;
 };
 
 mvelo.EditorContainer.prototype.create = function(done) {
@@ -56,7 +57,14 @@ mvelo.EditorContainer.prototype.create = function(done) {
   this.container.style.height = '100%';
   this.parent.appendChild(this.container);
 };
-
+mvelo.EditorContainer.prototype.getAttrs = function(callback) {
+  this.port.postMessage({
+    event:'editor-get-attrs',
+    sender: this.name,
+    keyringId: this.keyringId,
+  });
+  this.getAttrsCallback = callback;
+};
 mvelo.EditorContainer.prototype.encrypt = function(recipients, callback) {
   var error;
   if (this.encryptCallback) {
@@ -106,6 +114,9 @@ mvelo.EditorContainer.prototype.registerEventListener = function() {
       case 'encrypted-message':
         that.encryptCallback(null, msg.message);
         that.encryptCallback = null;
+        break;
+      case 'editor-get-attrs':
+        that.getAttrsCallback (null, msg.attributes);
         break;
       default:
         console.log('unknown event', msg);

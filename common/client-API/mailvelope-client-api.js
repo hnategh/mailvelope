@@ -255,6 +255,14 @@
     return postMessage('editor-encrypt', {recipients: recipients, editorId: this.editorId});
   };
 
+  /**
+   * Requests the Attrs of the editor content.
+   * @returns {Promise.<Object, Error>} an object which has all provided attributes from the editor
+   */
+  Editor.prototype.getAttrs = function() {
+    return postMessage('editor-attributes', {editorId: this.editorId});
+  };
+
   var callbacks = Object.create(null);
 
   function eventListener(event) {

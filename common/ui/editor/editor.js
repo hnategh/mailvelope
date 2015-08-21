@@ -363,6 +363,13 @@ var mvelo = mvelo || null;
     */
   }
 
+  function getAttrs() {
+    return {
+      height:editor[0].scrollHeight || editor[0].clientHeight,
+			width: editor[0].scrollWidth || editor[0].clientWidth
+    };
+  }
+
   function setRichText(text, type) {
     if (type === 'text') {
       text = '<pre>' + text + '</pre>';
@@ -541,6 +548,14 @@ var mvelo = mvelo || null;
         }
         $('#signBtn, #encryptBtn').hide();
         $('#transferBtn').show();
+        break;
+      case 'get-attrs':
+        port.postMessage({
+          event: 'editor-get-attrs',
+					sender: name,
+          attributes: getAttrs(),
+					action: msg.action
+        });
         break;
       default:
         console.log('unknown event');

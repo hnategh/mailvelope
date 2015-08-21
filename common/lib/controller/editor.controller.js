@@ -55,6 +55,18 @@ define(function(require, exports, module) {
           this.ports.editorCont.postMessage({event: 'editor-ready'});
         }
         break;
+      case 'editor-get-attrs':
+        if (msg.action === 'attributes') {
+          if (this.ports.editorCont && msg && msg.attributes) {
+            this.ports.editorCont.postMessage({event:'editor-get-attrs', attributes:msg.attributes});
+          } else {
+            throw new Error('Unable to get attributes!');
+          }
+        }
+        else {
+          this.ports.editor.postMessage({event: 'get-attrs', action:'attributes'});
+        }
+        break;
       case 'editor-cancel':
         this.editorPopup.close();
         this.editorPopup = null;

@@ -147,6 +147,9 @@ mvelo.domAPI.eventListener = function(event) {
       case 'settings-container':
         mvelo.domAPI.settingsContainer(data.selector, keyringId, data.options, mvelo.domAPI.reply.bind(null, event.data.id));
         break;
+      case 'editor-attributes':
+        mvelo.domAPI.getEditorAttrs(data.editorId, mvelo.domAPI.reply.bind(null, event.data.id));
+        break;
       case 'editor-encrypt':
         mvelo.domAPI.editorEncrypt(data.editorId, data.recipients, mvelo.domAPI.reply.bind(null, event.data.id));
         break;
@@ -168,6 +171,10 @@ mvelo.domAPI.eventListener = function(event) {
   } catch (err) {
     mvelo.domAPI.reply(event.data.id, err);
   }
+};
+
+mvelo.domAPI.getEditorAttrs = function(editorId, callback) {
+  this.containers.get(editorId).getAttrs(callback);
 };
 
 mvelo.domAPI.getKeyring = function(keyringId, callback) {
