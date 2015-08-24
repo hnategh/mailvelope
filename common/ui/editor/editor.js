@@ -166,6 +166,18 @@ var mvelo = mvelo || null;
     delete attachments[id];
   }
 
+  function attachmentForReplyTo(filename, content, mimeType) {
+    var contentLength = Object.keys(content).length;
+    var uint8Array = new Uint8Array(contentLength);
+    for (var i = 0; i < contentLength; i++) {
+      uint8Array[i] = content[i];
+    }
+    var blob = new Blob ([uint8Array], { type: mimeType, filename:filename});
+    var file = new File ([blob], filename);
+
+    addAttachment(file);
+  }
+
   function addAttachment(file) {
     onChange(); // setting the message as dirty
     var fileNameNoExt = mvelo.util.extractFileNameWithoutExt(file.name);
@@ -195,6 +207,8 @@ var mvelo = mvelo || null;
       logUserInput('security_log_remove_attachment');
     });
 
+    var objectUrl = window.URL.createObjectURL(file);
+
     var $extensionButton = $('<span/>', {
       "data-id": id,
       "class": 'label attachmentExtension ' + extClass
@@ -204,13 +218,19 @@ var mvelo = mvelo || null;
       "class": 'filename'
     }).append(fileNameNoExt);
 
-    var fileUI = $('<div/>', {
+    var fileUI = $('<a/>', {
       "title": file.name,
+      "download": file.name,
+      "href": objectUrl,
       "class": 'attachmentButton'
     })
       .append($extensionButton)
       .append($fileName)
       .append($removeUploadButton);
+
+    fileUI.on("click", function() {
+      logUserInput('security_log_attachment_download');
+    });
 
     $("#uploadPanel").append(fileUI);
   }
@@ -556,6 +576,9 @@ var mvelo = mvelo || null;
           attributes: getAttrs(),
 					action: msg.action
         });
+        break;
+      case 'attachment-for-replyTo':
+        attachmentForReplyTo(msg.message.filename, msg.message.content, msg.message.mimeType);
         break;
       default:
         console.log('unknown event');

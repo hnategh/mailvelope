@@ -285,6 +285,9 @@ define(function(require, exports, module) {
         },
         onAttachment: function(part) {
           // only reply scenario at the moment
+          if (that.options.replyTo) {
+            that.ports.editor.postMessage({event: 'attachment-for-replyTo', message: part});
+          }
         }
       };
       decryptCtrl.parseMessage(rawText, handlers, 'text');
